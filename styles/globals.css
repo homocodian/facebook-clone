@@ -1,16 +1,24 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-fb-gray;
+  }
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+@layer components {
+  .input-icon {
+    @apply inline-flex items-center justify-center flex-grow 
+    space-x-1 sm:space-x-2 hover:bg-gray-100 rounded-lg cursor-pointer xs:p-2;
+  }
+  .input-icon-text {
+    @apply w-[5ch] sm:w-[11ch] md:w-[13ch] truncate
+    capitalize text-fb-secondary-icon font-semibold;
+  }
+  .post-footer-icon {
+    @apply flex items-center justify-center space-x-2 
+    p-2 sm:px-10 md:px-12 cursor-pointer hover:bg-gray-100 hover:rounded-lg;
+  }
 }
