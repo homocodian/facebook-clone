@@ -1,13 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import FacebookLogo from "../public/facebook.svg";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 function Login() {
   return (
     <div>
       <Head>
         <title>login</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <meta name="description" content="login to facebook" />
       </Head>
       <main className="h-screen grid place-items-center">
