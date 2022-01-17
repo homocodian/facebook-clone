@@ -14,3 +14,7 @@ I'm a full stack developer...
 **Client:** Next, Next auth, Firebase, TailwindCSS
 
 **Server:** Node
+
+## Note
+
+NOTE: At the time of writing this clone next auth's getToken method is not working on production environment that's why removed middleware
