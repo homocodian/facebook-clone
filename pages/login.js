@@ -1,9 +1,15 @@
 import Head from "next/head";
 import Image from "next/image";
 import FacebookLogo from "../public/facebook.svg";
-import { getSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
+  const session = useSession();
+  if (session.status === "authenticated" && session.data) {
+    router.replace("/");
+  }
   return (
     <div>
       <Head>
@@ -34,19 +40,3 @@ function Login() {
 }
 
 export default Login;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  if (session && session.user) {
-    return {
-      redirect: {
-        permanent: true,
-        destination: "/",
-      },
-      props: {},
-    };
-  }
-  return {
-    props: {},
-  };
-}

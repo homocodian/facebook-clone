@@ -3,9 +3,15 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Feeds from "../components/Feeds";
 import Contacts from "../components/Contacts";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../utils/firebase";
+import app from "../utils/firebase";
 import { getSession } from "next-auth/react";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 export default function Home({ session, posts }) {
   return (
@@ -41,7 +47,7 @@ export async function getServerSideProps(context) {
     };
   }
   const snapshot = await getDocs(
-    query(collection(db, "posts"), orderBy("timestamp", "desc"))
+    query(collection(getFirestore(app), "posts"), orderBy("timestamp", "desc"))
   );
   const posts = snapshot.docs.map((doc) => ({
     id: doc.id,
