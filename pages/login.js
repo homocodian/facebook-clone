@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import FacebookLogo from "../public/facebook.svg";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 function Login() {
   return (
@@ -24,7 +24,7 @@ function Login() {
             className="text-center text-lg mt-10 px-4 py-2 bg-fb-blue text-white rounded-full"
             onClick={signIn}
           >
-            Login to facebook
+            Login to facebook clone
           </button>
         </div>
       </main>

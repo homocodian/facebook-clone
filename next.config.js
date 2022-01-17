@@ -9,6 +9,7 @@ module.exports = {
       "thumbor.forbes.com",
       "www.thehindubusinessline.com",
       "firebasestorage.googleapis.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };
