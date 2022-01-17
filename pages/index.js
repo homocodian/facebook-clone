@@ -31,6 +31,15 @@ export default function Home({ session, posts }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+      props: {},
+    };
+  }
   const snapshot = await getDocs(
     query(collection(db, "posts"), orderBy("timestamp", "desc"))
   );
