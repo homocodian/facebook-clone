@@ -28,10 +28,13 @@ function Login() {
             alt="facebook logo"
           />
           <button
+            disabled={session.status === "loading" ? true : false}
             className="text-center text-lg mt-10 px-4 py-2 bg-fb-blue text-white rounded-full"
             onClick={signIn}
           >
-            Login to facebook
+            {session.status === "loading"
+              ? "Loading please wait..."
+              : "Login to facebook"}
           </button>
         </div>
       </main>
