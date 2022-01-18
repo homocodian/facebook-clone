@@ -1,5 +1,4 @@
 import Loader from "./Loader";
-import Image from "next/image";
 import Snackabr from "./Snackbar";
 import filterWords from "../utils/filterWords";
 import isOnline from "../utils/checkNetwork";
@@ -57,7 +56,10 @@ function Input({ session }) {
         );
       }
     } catch (error) {
-      setAlert({ open: true, message: "Unable to post, try later" });
+      setAlert({
+        open: true,
+        message: "Sothing went wrong, please try later!",
+      });
     }
     inputRef.current.value = "";
     removeImage();
@@ -85,12 +87,11 @@ function Input({ session }) {
       >
         {/* message */}
         <div className="flex items-center space-x-2">
-          <Image
-            layout="fixed"
+          <img
             width={40}
             height={40}
             src={session?.user?.image}
-            alt=""
+            alt="profile"
             className="rounded-full"
           />
           <form className="flex flex-1">

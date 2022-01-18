@@ -19,6 +19,6 @@
   }
   .post-footer-icon {
     @apply flex items-center justify-center space-x-2 
-    p-2 sm:px-10 md:px-12 cursor-pointer hover:bg-gray-100 hover:rounded-lg;
+    p-2 sm:px-10 cursor-pointer hover:bg-gray-100 hover:rounded-lg;
   }
 }

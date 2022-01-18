@@ -1,8 +1,8 @@
+import Post from "./Post";
+import Snackbar from "./Snackbar";
 import { db } from "../utils/firebase";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
-import Snackbar from "./Snackbar";
-import Post from "./Post";
 import { useState } from "react";
 
 function Posts({ posts, session }) {
@@ -16,17 +16,19 @@ function Posts({ posts, session }) {
       {posts || realtimePosts ? (
         realtimePosts ? (
           realtimePosts.docs.map((doc) => {
-            const data = doc.data();
+            const post = doc.data();
             return (
               <Post
                 key={doc.id}
                 id={doc.id}
-                profile={data?.profile}
-                name={data.name}
-                email={data?.email}
-                timestamp={data?.timestamp}
-                message={data?.message}
-                imageUrl={data?.downloadUrl}
+                profile={post.profile}
+                name={post.name}
+                email={post.email}
+                timestamp={post?.timestamp}
+                message={post?.message}
+                imageUrl={post?.downloadUrl}
+                numberofLikes={post?.numberofLikes}
+                likedBy={post?.likedBy}
                 session={session}
                 showAlert={setAlert}
               />
@@ -43,6 +45,8 @@ function Posts({ posts, session }) {
               timestamp={post?.timestamp}
               message={post?.message}
               imageUrl={post?.downloadUrl}
+              numberofLikes={post?.numberofLikes}
+              likedBy={post?.likedBy}
               session={session}
               showAlert={setAlert}
             />

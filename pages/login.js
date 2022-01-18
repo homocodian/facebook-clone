@@ -3,13 +3,18 @@ import Image from "next/image";
 import FacebookLogo from "../public/facebook.svg";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function Login() {
   const router = useRouter();
   const session = useSession();
-  if (session.status === "authenticated" && session.data) {
-    router.replace("/");
-  }
+  useEffect(() => {
+    if (session.status === "authenticated" && session.data) {
+      router.replace("/");
+    }
+    console.log(session.data);
+  }, [session]);
+
   return (
     <div>
       <Head>
@@ -34,7 +39,7 @@ function Login() {
           >
             {session.status === "loading"
               ? "Loading please wait..."
-              : "Login to facebook"}
+              : "Login to facebook clone"}
           </button>
         </div>
       </main>

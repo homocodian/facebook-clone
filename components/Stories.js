@@ -2,12 +2,11 @@ import Story from "./Story";
 import stories from "../utils/userData";
 import Image from "next/image";
 import { PlusIcon } from "@heroicons/react/solid";
-import { useSession } from "next-auth/react";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 
 function Stories({ session }) {
   return (
-    <div className="relative w-fit flex items-center justify-center gap-1 sm:gap-2 md:gap-4 pb-4">
+    <div className="max-w-[542px] flex items-center justify-center gap-1 sm:gap-2 md:gap-4 pb-4">
       <div className="relative cursor-pointer sm:bg-white sm:shadow-md w-12 h-12 sm:w-24 sm:h-36 lg:w-28 lg:h-48 rounded-xl">
         <div className="hidden relative sm:block w-full h-24 lg:h-36">
           <Image
@@ -28,16 +27,18 @@ function Stories({ session }) {
           </p>
         </div>
       </div>
-      {stories.map((user) => (
-        <Story
-          key={user.name}
-          src={user.src}
-          avatar={user.avatar}
-          name={user.name}
-        />
-      ))}
-      <div className="absolute cursor-pointer -right-3 flex items-center justify-center bg-white shadow-lg w-8 h-8 rounded-full">
-        <ChevronRightIcon className="h-5 text-fb-secondary-icon" />
+      <div className="relative flex items-center gap-1 sm:gap-2 md:gap-4">
+        {stories.map((user) => (
+          <Story
+            key={user.name}
+            src={user.src}
+            avatar={user.avatar}
+            name={user.name}
+          />
+        ))}
+        <div className="absolute cursor-pointer top-1/2 -translate-y-1/2 -right-5 flex items-center justify-center bg-white shadow-lg w-8 h-8 rounded-full">
+          <ChevronRightIcon className="h-5 text-fb-secondary-icon" />
+        </div>
       </div>
     </div>
   );

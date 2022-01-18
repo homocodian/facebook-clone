@@ -21,7 +21,7 @@ export default function Home({ session, posts }) {
         <meta name="description" content="facebook clone" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
       </Head>
-      <header>
+      <header className="sticky top-0 z-50">
         <Header session={session} />
       </header>
       <main>

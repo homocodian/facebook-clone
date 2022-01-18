@@ -1,18 +1,26 @@
 import Image from "next/image";
 import ConfirmDialog from "./ConfirmDialog";
 import replaceURLs from "../utils/replaceURLs";
-import { deleteDoc, doc } from "firebase/firestore";
 import { db, storage } from "../utils/firebase";
 import { deleteObject, ref } from "firebase/storage";
 import { getFormattedDate, getFullDate } from "../utils/dateFormatter";
+import { ThumbUpIcon as LikedIcon } from "@heroicons/react/solid";
+import { useEffect, useState } from "react";
+import {
+  arrayRemove,
+  arrayUnion,
+  deleteDoc,
+  doc,
+  increment,
+  updateDoc,
+} from "firebase/firestore";
+import isOnline from "../utils/checkNetwork";
 import {
   ShareIcon,
   ThumbUpIcon,
   ChatAltIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import { useState } from "react";
-import isOnline from "../utils/checkNetwork";
 
 function Post({
   id,
@@ -24,8 +32,24 @@ function Post({
   imageUrl,
   session,
   showAlert,
+  numberofLikes,
+  likedBy,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLikedByUser, setIsLikedByUser] = useState(false);
+
+  useEffect(() => {
+    function findIsLikedByUser(likedBy) {
+      if (likedBy) {
+        if (likedBy.find((likerEmail) => likerEmail === email)) {
+          setIsLikedByUser(true);
+        } else {
+          setIsLikedByUser(false);
+        }
+      }
+    }
+    findIsLikedByUser(likedBy);
+  }, [likedBy, email]);
 
   const openModal = () => {
     setIsDialogOpen(true);
@@ -46,12 +70,11 @@ function Post({
       <div className="bg-white p-5 rounded-tl-lg rounded-tr-lg">
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center gap-5">
-            <Image
-              layout="fixed"
+            <img
               width={40}
               height={40}
-              src={profile ? profile : ""}
-              alt=""
+              src={profile}
+              alt="profile"
               className="rounded-full"
             />
             <div>
@@ -102,10 +125,28 @@ function Post({
         </div>
       )}
       {/* footer */}
-      <div className="flex items-center justify-between border-t p-3 mt-4">
-        <div className="post-footer-icon">
-          <ThumbUpIcon className="h-5 text-fb-secondary-icon" />
+      <div className="flex items-center justify-between border-t p-3">
+        <div
+          className="post-footer-icon"
+          onClick={() =>
+            likePost(
+              id,
+              email,
+              isLikedByUser,
+              showAlert,
+              numberofLikes && numberofLikes !== 0 ? numberofLikes - 1 : 0
+            )
+          }
+        >
+          {isLikedByUser ? (
+            <LikedIcon className="h-5 text-fb-blue" />
+          ) : (
+            <ThumbUpIcon className="h-5 text-fb-secondary-icon" />
+          )}
           <p className="text-xs xs:text-base">Like</p>
+          {numberofLikes && numberofLikes !== 0 ? (
+            <span>{numberofLikes}</span>
+          ) : null}
         </div>
         <div className="post-footer-icon">
           <ChatAltIcon className="h-5 text-fb-secondary-icon" />
@@ -133,6 +174,25 @@ async function deletePost(id, imageUrl, showAlert) {
       await deleteObject(ref(storage, `posts/${id}`));
     }
   } catch (error) {
-    showAlert({ open: true, message: "Unable to delete post" });
+    showAlert({ open: true, message: "Sothing went wrong, please try later!" });
+  }
+}
+
+async function likePost(id, email, isLikedByUser, showAlert, numberofLikes) {
+  if (!isOnline()) {
+    showAlert({ open: true, message: "Check your network connection!" });
+    return;
+  }
+  try {
+    await updateDoc(doc(db, "posts", `${id}`), {
+      // if likedbyuser is not true then increment like
+      numberofLikes: !isLikedByUser ? increment(1) : numberofLikes,
+      likedBy: isLikedByUser ? arrayRemove(email) : arrayUnion(email),
+    });
+  } catch (error) {
+    showAlert({
+      open: true,
+      message: "Something went wrong, please try later!",
+    });
   }
 }

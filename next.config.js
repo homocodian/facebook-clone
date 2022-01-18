@@ -10,6 +10,7 @@ module.exports = {
       "www.thehindubusinessline.com",
       "firebasestorage.googleapis.com",
       "lh3.googleusercontent.com",
+      "scontent-iad3-1.xx.fbcdn.net",
     ],
   },
 };
