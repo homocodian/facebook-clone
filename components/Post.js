@@ -125,7 +125,7 @@ function Post({
         </div>
       )}
       {/* footer */}
-      <div className="flex items-center justify-between border-t p-3">
+      <div className="flex items-center justify-between border-t sm:p-1 lg:p-3">
         <div
           className="post-footer-icon"
           onClick={() =>

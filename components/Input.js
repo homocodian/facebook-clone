@@ -103,8 +103,8 @@ function Input({ session }) {
               placeholder={`whats on your mind, ${
                 session.user?.name.split(" ")[0]
               }?`}
-              className="outline-none h-10 bg-gray-100 rounded-full px-2 
-              flex-grow sm:px-4"
+              className="outline-none h-10 bg-gray-100 
+              rounded-full px-4 sm:px-4 w-[100%] sm:flex-row"
             />
             {imageToPost && (
               <div

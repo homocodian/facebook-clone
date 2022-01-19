@@ -25,10 +25,12 @@ export default function Home({ session, posts }) {
         <Header session={session} />
       </header>
       <main>
-        <div className="flex justify-between 3xl:justify-center px-2 py-6">
-          <Sidebar session={session} />
-          <Feeds session={session} posts={posts} />
-          <Contacts />
+        <div className="px-2 sm:px-3 md:px-4">
+          <div className="flex justify-between 3xl:justify-center">
+            <Sidebar session={session} />
+            <Feeds session={session} posts={posts} />
+            <Contacts />
+          </div>
         </div>
       </main>
     </div>

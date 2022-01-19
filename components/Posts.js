@@ -12,7 +12,7 @@ function Posts({ posts, session }) {
   const [alert, setAlert] = useState({ open: false, message: "" });
 
   return (
-    <div>
+    <>
       {posts || realtimePosts ? (
         realtimePosts ? (
           realtimePosts.docs.map((doc) => {
@@ -62,7 +62,7 @@ function Posts({ posts, session }) {
         text={alert.message}
         title="Alert"
       />
-    </div>
+    </>
   );
 }
 

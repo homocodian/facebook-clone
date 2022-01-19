@@ -9,6 +9,9 @@
 }
 
 @layer components {
+  .container-height {
+    height: calc(100vh - 66px);
+  }
   .input-icon {
     @apply inline-flex items-center justify-center flex-grow 
     space-x-1 sm:space-x-2 hover:bg-gray-100 rounded-lg cursor-pointer xs:p-2;

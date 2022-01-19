@@ -22,36 +22,36 @@ function Center() {
   const handleActiveMenuChange = (title) => {
     switch (title) {
       case "home":
-        setIsActive((prev) => ({
+        setIsActive({
           home: true,
           friends: false,
           groups: false,
           gaming: false,
-        }));
+        });
         break;
       case "friends":
-        setIsActive((prev) => ({
+        setIsActive({
           home: false,
           friends: true,
           groups: false,
           gaming: false,
-        }));
+        });
         break;
       case "groups":
-        setIsActive((prev) => ({
+        setIsActive({
           home: false,
           friends: false,
           groups: true,
           gaming: false,
-        }));
+        });
         break;
       case "gaming":
-        setIsActive((prev) => ({
+        setIsActive({
           home: false,
           friends: false,
           groups: false,
           gaming: true,
-        }));
+        });
         break;
       default:
         break;

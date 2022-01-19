@@ -1,5 +1,7 @@
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { LogoutIcon } from "@heroicons/react/outline";
+import SidebarRow from "./SidebarRow";
 import {
   UsersIcon,
   UserGroupIcon,
@@ -9,13 +11,17 @@ import {
   FlagIcon,
   StarIcon,
 } from "@heroicons/react/solid";
-import { LogoutIcon } from "@heroicons/react/outline";
-import SidebarRow from "./SidebarRow";
 
 function Sidebar({ session }) {
   return (
-    <div className="hidden xs:flex flex-col items-center justify-start gap-1">
-      <div className="flex gap-4 sm:hover:bg-gray-200 w-full px-2 py-2 rounded-md cursor-pointer">
+    <div
+      className="hidden xs:flex flex-col items-center 
+      justify-start gap-1 xl:w-full  max-w-[280px] mt-6"
+    >
+      <div
+        className="flex gap-4 sm:hover:bg-gray-200 
+        w-full px-2 py-2 rounded-md cursor-pointer"
+      >
         <Image
           priority
           layout="fixed"
@@ -25,7 +31,7 @@ function Sidebar({ session }) {
           alt="user"
           className="rounded-full"
         />
-        <p className="capitalize text-center font-semibold hidden md:block mr-8">
+        <p className="capitalize text-center font-semibold hidden md:block">
           {session.user.name}
         </p>
       </div>

@@ -12,8 +12,7 @@ function Login() {
     if (session.status === "authenticated" && session.data) {
       router.replace("/");
     }
-    console.log(session.data);
-  }, [session]);
+  }, [session, router]);
 
   return (
     <div>
@@ -23,25 +22,32 @@ function Login() {
         <meta name="description" content="login to facebook" />
       </Head>
       <main className="h-screen grid place-items-center">
-        <div className="flex flex-col justify-center items-center">
-          <Image
-            priority
-            layout="fixed"
-            width={200}
-            height={200}
-            src={FacebookLogo}
-            alt="facebook logo"
-          />
-          <button
-            disabled={session.status === "loading" ? true : false}
-            className="text-center text-lg mt-10 px-4 py-2 bg-fb-blue text-white rounded-full"
-            onClick={signIn}
-          >
-            {session.status === "loading"
-              ? "Loading please wait..."
-              : "Login to facebook clone"}
-          </button>
-        </div>
+        {session.status === "authenticated" ? (
+          <p className="text-xl font-semibold text-fb-blue p-4">
+            Please wait, you are being redirected to your destination 🔥
+          </p>
+        ) : (
+          <div className="flex flex-col justify-center items-center">
+            <Image
+              priority
+              layout="fixed"
+              width={200}
+              height={200}
+              src={FacebookLogo}
+              alt="facebook logo"
+            />
+            <button
+              disabled={session.status === "loading" ? true : false}
+              className="text-center text-lg mt-10 px-4 py-2 bg-fb-blue 
+            text-white rounded-full disabled:bg-gray-200"
+              onClick={signIn}
+            >
+              {session.status === "loading"
+                ? "Loading please wait..."
+                : "Login to facebook clone"}
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
