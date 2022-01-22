@@ -33,8 +33,6 @@ function Posts({ posts, session }) {
                 timestamp={post?.timestamp}
                 message={post?.message}
                 imageUrl={post?.downloadUrl}
-                numberofLikes={post?.numberofLikes}
-                likedBy={post?.likedBy}
                 session={session}
                 showAlert={setAlert}
               />
@@ -51,8 +49,6 @@ function Posts({ posts, session }) {
               timestamp={post?.timestamp}
               message={post?.message}
               imageUrl={post?.downloadUrl}
-              numberofLikes={post?.numberofLikes}
-              likedBy={post?.likedBy}
               session={session}
               showAlert={setAlert}
             />

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ConfirmDialog from "./ConfirmDialog";
+import isOnline from "../utils/checkNetwork";
 import replaceURLs from "../utils/replaceURLs";
 import { db, storage } from "../utils/firebase";
 import { deleteObject, ref } from "firebase/storage";
@@ -7,14 +8,12 @@ import { getFormattedDate, getFullDate } from "../utils/dateFormatter";
 import { ThumbUpIcon as LikedIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import {
-  arrayRemove,
-  arrayUnion,
+  collection,
   deleteDoc,
   doc,
-  increment,
-  updateDoc,
+  onSnapshot,
+  setDoc,
 } from "firebase/firestore";
-import isOnline from "../utils/checkNetwork";
 import {
   ShareIcon,
   ThumbUpIcon,
@@ -32,24 +31,32 @@ function Post({
   imageUrl,
   session,
   showAlert,
-  numberofLikes,
-  likedBy,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isLikedByUser, setIsLikedByUser] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db, id]
+  );
 
   useEffect(() => {
-    function findIsLikedByUser(likedBy) {
-      if (likedBy) {
-        if (likedBy.find((likerEmail) => likerEmail === email)) {
-          setIsLikedByUser(true);
-        } else {
-          setIsLikedByUser(false);
-        }
-      }
+    setHasLiked(likes.findIndex((like) => like.id === session.user.uid) !== -1);
+  });
+
+  const handleLike = async () => {
+    if (hasLiked) {
+      await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+        username: session.user.name,
+      });
     }
-    findIsLikedByUser(likedBy);
-  }, [likedBy, email]);
+  };
 
   const openModal = () => {
     setIsDialogOpen(true);
@@ -126,27 +133,14 @@ function Post({
       )}
       {/* footer */}
       <div className="flex items-center justify-between border-t sm:p-1 lg:p-3">
-        <div
-          className="post-footer-icon"
-          onClick={() =>
-            likePost(
-              id,
-              email,
-              isLikedByUser,
-              showAlert,
-              numberofLikes && numberofLikes !== 0 ? numberofLikes - 1 : 0
-            )
-          }
-        >
-          {isLikedByUser ? (
+        <div className="post-footer-icon" onClick={handleLike}>
+          {hasLiked ? (
             <LikedIcon className="h-5 text-fb-blue" />
           ) : (
             <ThumbUpIcon className="h-5 text-fb-secondary-icon" />
           )}
           <p className="text-xs xs:text-base">Like</p>
-          {numberofLikes && numberofLikes !== 0 ? (
-            <span>{numberofLikes}</span>
-          ) : null}
+          {likes.length > 0 && <span>{likes.length}</span>}
         </div>
         <div className="post-footer-icon">
           <ChatAltIcon className="h-5 text-fb-secondary-icon" />
@@ -175,24 +169,5 @@ async function deletePost(id, imageUrl, showAlert) {
     }
   } catch (error) {
     showAlert({ open: true, message: "Sothing went wrong, please try later!" });
-  }
-}
-
-async function likePost(id, email, isLikedByUser, showAlert, numberofLikes) {
-  if (!isOnline()) {
-    showAlert({ open: true, message: "Check your network connection!" });
-    return;
-  }
-  try {
-    await updateDoc(doc(db, "posts", `${id}`), {
-      // if likedbyuser is not true then increment like
-      numberofLikes: !isLikedByUser ? increment(1) : numberofLikes,
-      likedBy: isLikedByUser ? arrayRemove(email) : arrayUnion(email),
-    });
-  } catch (error) {
-    showAlert({
-      open: true,
-      message: "Something went wrong, please try later!",
-    });
   }
 }
