@@ -41,12 +41,12 @@ function Post({
       onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
         setLikes(snapshot.docs)
       ),
-    [db, id]
+    [id]
   );
 
   useEffect(() => {
     setHasLiked(likes.findIndex((like) => like.id === session.user.uid) !== -1);
-  });
+  }, [likes, session.user.uid]);
 
   const handleLike = async () => {
     if (hasLiked) {
