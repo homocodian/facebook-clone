@@ -1,15 +1,21 @@
 import Post from "./Post";
 import Snackbar from "./Snackbar";
 import { db } from "../utils/firebase";
-import { collection, orderBy, query } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { collection, orderBy, query, onSnapshot } from "firebase/firestore";
 
 function Posts({ posts, session }) {
-  const [realtimePosts] = useCollection(
-    query(collection(db, "posts"), orderBy("timestamp", "desc"))
-  );
+  const [realtimePosts, setRealtimePosts] = useState(null);
   const [alert, setAlert] = useState({ open: false, message: "" });
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      (snapshot) => {
+        setRealtimePosts(snapshot);
+      }
+    );
+    return unsubscribe;
+  }, []);
 
   return (
     <>
